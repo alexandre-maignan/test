@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Contact — OBLIQUE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body>
+
+<div id="loader"><div class="mark">OBLIQUE</div><div class="bar"></div></div>
+<div class="cursor"></div>
+
+<nav>
+  <div class="logo">OBLI<em>Q</em>UE</div>
+  <div class="links">
+    <a href="index.html" data-link>Accueil</a>
+    <a href="travaux.html" data-link>Travaux</a>
+    <a href="studio.html" data-link>Studio</a>
+    <a href="contact.html" data-link>Contact</a>
+  </div>
+</nav>
+
+<main data-barba="container" data-barba-namespace="contact">
+  <h2 style="font-size:clamp(2rem,5vw,3.2rem);">Parlons-en</h2>
+  <p style="margin-bottom:2rem;">Un projet, une question, une idée à demi formée — écrivez-nous.</p>
+  <div class="contact-row"><span>Email</span><span>bonjour@oblique.studio</span></div>
+  <div class="contact-row"><span>Paris</span><span>14 rue des Tournelles, 75003</span></div>
+  <div class="contact-row"><span>Sydney — heure locale</span><span class="time" data-clock>--:--:--</span></div>
+  <footer><span>© 2026 Oblique Studio</span><span>Instagram — LinkedIn</span></footer>
+</main>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

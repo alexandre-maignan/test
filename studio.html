@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Studio — OBLIQUE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body>
+
+<div id="loader"><div class="mark">OBLIQUE</div><div class="bar"></div></div>
+<div class="cursor"></div>
+
+<nav>
+  <div class="logo">OBLI<em>Q</em>UE</div>
+  <div class="links">
+    <a href="index.html" data-link>Accueil</a>
+    <a href="travaux.html" data-link>Travaux</a>
+    <a href="studio.html" data-link>Studio</a>
+    <a href="contact.html" data-link>Contact</a>
+  </div>
+</nav>
+
+<main data-barba="container" data-barba-namespace="studio">
+  <h2 style="font-size:clamp(2rem,5vw,3.2rem);">Le studio</h2>
+  <div class="about-grid">
+    <p style="max-width:44ch;">Fondé en 2019, OBLIQUE conçoit des identités en mouvement pour des marques qui préfèrent la retenue à l'esbroufe. Chaque transition est écrite comme une phrase : un début, une tension, une résolution.</p>
+    <div>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="approche">Approche</button>
+        <button class="tab-btn" data-tab="equipe">Équipe</button>
+        <button class="tab-btn" data-tab="clients">Clients</button>
+      </div>
+      <div class="tab-panel active" data-panel="approche"><p style="max-width:42ch;">Nous dessinons d'abord le rythme, ensuite l'image. Le clip-path, la durée, l'ease — chaque paramètre est décidé avant la première maquette.</p></div>
+      <div class="tab-panel" data-panel="equipe"><p style="max-width:42ch;">Six personnes, deux fuseaux horaires, un seul système de design partagé entre Paris et Sydney.</p></div>
+      <div class="tab-panel" data-panel="clients"><p style="max-width:42ch;">Maison Verel, Nord Objets, Atelier Kōji, Ferrous, Solvay & Fils, Cabinet Ondine.</p></div>
+    </div>
+  </div>
+</main>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

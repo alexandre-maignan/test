@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Travaux — OBLIQUE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body>
+
+<div id="loader"><div class="mark">OBLIQUE</div><div class="bar"></div></div>
+<div class="cursor"></div>
+
+<nav>
+  <div class="logo">OBLI<em>Q</em>UE</div>
+  <div class="links">
+    <a href="index.html" data-link>Accueil</a>
+    <a href="travaux.html" data-link>Travaux</a>
+    <a href="studio.html" data-link>Studio</a>
+    <a href="contact.html" data-link>Contact</a>
+  </div>
+</nav>
+
+<main data-barba="container" data-barba-namespace="travaux">
+  <h2 style="font-size:clamp(2rem,5vw,3.2rem);">Travaux sélectionnés</h2>
+  <div class="worklist" data-worklist>
+    <div class="work-item" data-work-item><span class="work-idx"></span><span class="work-name">Champ Continu</span><span class="work-client">(Maison Verel.)</span></div>
+    <div class="work-item" data-work-item><span class="work-idx"></span><span class="work-name">Lenteur Utile</span><span class="work-client">(Nord Objets.)</span></div>
+    <div class="work-item" data-work-item><span class="work-idx"></span><span class="work-name">Seuil</span><span class="work-client">(Atelier Kōji.)</span></div>
+    <div class="work-item" data-work-item><span class="work-idx"></span><span class="work-name">Grain</span><span class="work-client">(Ferrous.)</span></div>
+    <div class="work-item" data-work-item><span class="work-idx"></span><span class="work-name">Répertoire</span><span class="work-client">(Solvay & Fils.)</span></div>
+    <div class="work-item" data-work-item><span class="work-idx"></span><span class="work-name">Basse Marée</span><span class="work-client">(Cabinet Ondine.)</span></div>
+  </div>
+</main>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
