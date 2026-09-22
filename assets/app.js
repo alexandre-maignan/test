@@ -86,31 +86,41 @@ async function navigateTo(url){
   }
 
   const doc = new DOMParser().parseFromString(html, 'text/html');
-  const nextMain = document.adoptNode(doc.querySelector('main[data-barba]'));
+  const parsedMain = doc.querySelector('main[data-barba]');
   const liveMain = document.querySelector('main[data-barba]');
-  if(!nextMain || !liveMain){ location.href = url; return; }
+  if(!parsedMain || !liveMain){ location.href = url; return; }
+  const nextMain = document.adoptNode(parsedMain);
 
   history.pushState({}, '', url);
   document.title = doc.title;
 
-  const finish = ()=>{
-    liveMain.replaceWith(nextMain);
+  const settle = ()=>{
+    liveMain.remove();
+    gsap.set(nextMain, {clearProps:'position,top,left,width,height,overflow,background,zIndex,clipPath'});
     afterSwap(nextMain);
     navigating = false;
   };
 
   if(reduced){
-    finish();
+    document.body.appendChild(nextMain);
+    settle();
     return;
   }
 
-  gsap.set(nextMain, {clipPath:'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)'});
+  // While it wipes in, the incoming page is a fixed full-viewport layer:
+  // this keeps the clip-path percentages relative to the visible window
+  // instead of the (possibly much taller) page content.
+  gsap.set(nextMain, {
+    position:'fixed', top:0, left:0, width:'100%', height:'100vh',
+    overflow:'hidden', zIndex:10, background:'var(--bg)',
+    clipPath:'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)'
+  });
+  document.body.appendChild(nextMain);
 
-  gsap.timeline({defaults:{duration:1.1, ease:'power4.inOut'}})
+  gsap.timeline({defaults:{duration:1.1, ease:'power4.inOut'}, onComplete:settle})
     .to(liveMain, {yPercent:-100, overwrite:'auto'}, 0)
-    .call(finish, [], 0.05)
     .fromTo(nextMain, {clipPath:'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)'},
-                        {clipPath:'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', overwrite:'auto'}, 0.05);
+                        {clipPath:'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', overwrite:'auto'}, 0);
 }
 
 function initRouter(){
