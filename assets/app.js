@@ -58,56 +58,71 @@ function initPage(root=document){
 }
 
 /* ---------- nav active state ---------- */
+function currentFile(){
+  return location.pathname.split('/').pop() || 'index.html';
+}
 function setActiveLink(){
-  const path = location.pathname.replace(/\/index\.html$/,'/').replace(/\/$/,'/index.html');
+  const file = currentFile();
   document.querySelectorAll('.links a').forEach(a=>{
-    const href = a.getAttribute('href');
-    a.classList.toggle('is-current', href === path || (href === 'index.html' && (path.endsWith('/index.html'))));
+    a.classList.toggle('is-current', a.getAttribute('href') === file);
   });
 }
 
 /* ---------- transition router (fetches real, separate .html pages) ---------- */
-function initRouter(){
-  const main = document.querySelector('main[data-barba]');
-  if(!main) return;
+let navigating = false;
 
-  document.body.addEventListener('click', async (e)=>{
+async function navigateTo(url){
+  if(navigating || url === currentFile()) return;
+  navigating = true;
+
+  let html;
+  try{
+    const res = await fetch(url, {cache:'no-store'});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    html = await res.text();
+  }catch(err){
+    location.href = url; // fallback: plain navigation (e.g. blocked fetch, running from file://)
+    return;
+  }
+
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const nextMain = document.adoptNode(doc.querySelector('main[data-barba]'));
+  const liveMain = document.querySelector('main[data-barba]');
+  if(!nextMain || !liveMain){ location.href = url; return; }
+
+  history.pushState({}, '', url);
+  document.title = doc.title;
+
+  const finish = ()=>{
+    liveMain.replaceWith(nextMain);
+    afterSwap(nextMain);
+    navigating = false;
+  };
+
+  if(reduced){
+    finish();
+    return;
+  }
+
+  gsap.set(nextMain, {clipPath:'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)'});
+
+  gsap.timeline({defaults:{duration:1.1, ease:'power4.inOut'}})
+    .to(liveMain, {yPercent:-100, overwrite:'auto'}, 0)
+    .call(finish, [], 0.05)
+    .fromTo(nextMain, {clipPath:'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)'},
+                        {clipPath:'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', overwrite:'auto'}, 0.05);
+}
+
+function initRouter(){
+  if(!document.querySelector('main[data-barba]')) return;
+
+  document.body.addEventListener('click', (e)=>{
     const a = e.target.closest('a[data-link]');
     if(!a) return;
     const url = a.getAttribute('href');
-    if(!url || url.startsWith('#') || a.target === '_blank') return;
+    if(!url || url.startsWith('#') || url.startsWith('http') || a.target === '_blank') return;
     e.preventDefault();
-    if(location.pathname.endsWith('/'+url) || (url==='index.html' && location.pathname.endsWith('/'))) return;
-
-    let html;
-    try{
-      const res = await fetch(url);
-      html = await res.text();
-    }catch(err){
-      location.href = url; // fallback: plain navigation (e.g. running from file://)
-      return;
-    }
-
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const nextMain = doc.querySelector('main[data-barba]');
-    if(!nextMain){ location.href = url; return; }
-
-    history.pushState({}, '', url);
-    document.title = doc.title;
-
-    if(reduced){
-      main.replaceWith(nextMain);
-      afterSwap(nextMain, url);
-      return;
-    }
-
-    const tl = gsap.timeline({defaults:{duration:1.1, ease:'power4.inOut'}});
-    gsap.set(nextMain, {clipPath:'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)'});
-
-    tl.to(main, {yPercent:-100, overwrite:'auto'}, 0)
-      .call(()=>{ main.replaceWith(nextMain); afterSwap(nextMain, url); }, [], 0.05)
-      .fromTo(nextMain, {clipPath:'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)'},
-                          {clipPath:'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', overwrite:'auto'}, 0);
+    navigateTo(url);
   });
 
   window.addEventListener('popstate', ()=> location.reload());
